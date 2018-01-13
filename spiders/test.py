@@ -5,7 +5,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.http.request import Request
 from bs4 import BeautifulSoup
 from project.items import ProjectItem
-
+import re
 
 class PagesSpider(CrawlSpider):
     """
@@ -25,9 +25,7 @@ class PagesSpider(CrawlSpider):
              process_request='parse'),
     )
 
-    custom_settings = {
-        'FEED_URI' : 'tmp/tesmdz.csv'
-    }
+    
     
 
     def parse(self, response):
@@ -61,7 +59,7 @@ class PagesSpider(CrawlSpider):
       except:
        pass
       try:
-       dropoffpoint = l.find("i", {"class": "bbc-icon2-circle first size16 u-red"}).get_text()
+       dropoffpoint = l.find("dl", {"class": "geo-to"}).get_text()
        f.write('\ndroppoffpoint : %s'%dropoffpoint.strip())
        #yield{'droppoffpoint': dropoffpoint.strip()}
       except:
@@ -75,9 +73,9 @@ class PagesSpider(CrawlSpider):
        pass
       try:
       
-       price = l.find("span", {"class": ""}).get_text()
-       f.write('\nprice : %d'%price.strip())
-       #yield{'price': price.strip()}
+       price = l.find("span", {"class": ""},text=re.compile(r'[0-9]{0,4}'))
+       f.write('\nprice : %s'%price.strip())
+       yield{'price': price.strip()}
       except:
        pass
       try:
@@ -99,7 +97,7 @@ class PagesSpider(CrawlSpider):
       except:
        pass
       try:
-       comforttravel = l.find("i", {"class": "bbc-icon2-comfort-plus size26 u-blue u-cell u-right no-margin-right tip"}).get_text()
+       comforttravel = l.find("i", {"class": "u-visuallyHidden"}).get_text()
        f.write('\ncomfort travel : %s'%comforttravel.strip())
        #yield{'Comfort travel': comforttravel.strip()}
       except:
@@ -117,13 +115,13 @@ class PagesSpider(CrawlSpider):
       except:
        pass
       try:
-       fbfriends = l.find("span", {"class": "tip user-trust-fb u-gray "}).get_text()
+       fbfriends = l.find("span", {"class": "tip user-trust-fb u-gray"}).get_text()
        f.write('\nfb friends : %s'%fbfriends.strip())
        #yield{'fbfriends': fbfriends.strip()}
       except:
        pass
       try:
-       govtid = l.find("div", {"class": "ProfileCard-info u-blue "}).get_text()
+       govtid = l.find("div", {"class": "ProfileCard-info u-blue"}).get_text()
        f.write('\ngovtid : %s'%govtid.strip())
        #yield{'govtid': govtid.strip()}
       except:
