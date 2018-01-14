@@ -73,8 +73,10 @@ class PagesSpider(CrawlSpider):
        pass
       try:
       
-       price = l.find("span", {"class": ""},text=re.compile(r'[0-9]{0,4}'))
-       f.write('\nprice : %s'%price.strip())
+       price = l.find("span", {"class":""})
+       #for x in re.findall('[0-9]+', price.text):
+       #cleaned = filter(lambda x: x!=u'\n',all)[4:]
+       f.write('\nprice : %d'%price)
        yield{'price': price.strip()}
       except:
        pass
@@ -127,7 +129,7 @@ class PagesSpider(CrawlSpider):
       except:
        pass
       try:
-       approval = l.find("i", {"class": "bbc-icon2-instant size26 u-yellow u-cell u-right no-margin-right tip "}).get_text()
+       approval = l.find("span", {"class": "u-visuallyHidden"}).get_text()
        #yield{'source': source.strip()}
        #yield{'destination': destination.strip()}
        #yield{'departurepoint': departurepoint.strip()}
@@ -142,7 +144,7 @@ class PagesSpider(CrawlSpider):
        #yield{'photo': photo.strip()}
        #yield{'fbfriends': fbfriends.strip()}
        #yield{'govtid': govtid.strip()}
-       f.write('\napproval : %s'%approval.strip())
+       f.write('\n%s'%approval.strip())
        #yield{'approval': approval.strip()}
  
        
@@ -155,4 +157,3 @@ class PagesSpider(CrawlSpider):
      #item['description'] = description
 
      f.close()     
-
