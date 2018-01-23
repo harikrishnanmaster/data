@@ -90,10 +90,10 @@ class PagesSpider(CrawlSpider):
        f.write('\nseats_left : %s'%avail.strip())
       else:
        pass
-      photo = hxs.xpath("//a[@class='PhotoWrapper PhotoWrapper--medium']/@href").extract()[0]
+      photo = hxs.xpath("//a[@class='PhotoWrapper PhotoWrapper--medium']//img/@src").extract()[0]
       if photo:
-       print '\ncar_owner_image  : https://d2kwny77wxvuie.cloudfront.net%s'%photo.strip()
-       f.write('\ncar_owner_image  :  https://d2kwny77wxvuie.cloudfront.net%s'%photo.strip())
+       print '\ncar_owner_image  : %s'%photo.strip()
+       f.write('\ncar_owner_image  :  %s'%photo.strip())
       else:
        pass
       name = hxs2.xpath("//h4[@class='ProfileCard-info ProfileCard-info--name u-truncate']/a/text()").extract()[0]
